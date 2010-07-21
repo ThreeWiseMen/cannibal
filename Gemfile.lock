@@ -1,0 +1,20 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    autotest (4.3.2)
+    diff-lcs (1.1.2)
+    rspec (2.0.0.beta.17)
+      rspec-core (= 2.0.0.beta.17)
+      rspec-expectations (= 2.0.0.beta.17)
+      rspec-mocks (= 2.0.0.beta.17)
+    rspec-core (2.0.0.beta.17)
+    rspec-expectations (2.0.0.beta.17)
+      diff-lcs (>= 1.1.2)
+    rspec-mocks (2.0.0.beta.17)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  autotest
+  rspec (= 2.0.0.beta.17)

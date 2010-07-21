@@ -1,0 +1,4 @@
+Cannibal
+========
+
+A simple permissions system for Ruby objects.
