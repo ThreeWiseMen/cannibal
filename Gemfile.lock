@@ -13,6 +13,7 @@ GEM
     gherkin (2.1.5)
       trollop (~> 1.16.2)
     json_pure (1.4.4)
+    rake (0.8.7)
     rspec (2.0.0.beta.19)
       rspec-core (= 2.0.0.beta.19)
       rspec-expectations (= 2.0.0.beta.19)
@@ -30,4 +31,5 @@ PLATFORMS
 DEPENDENCIES
   autotest
   cucumber
+  rake
   rspec (= 2.0.0.beta.19)
