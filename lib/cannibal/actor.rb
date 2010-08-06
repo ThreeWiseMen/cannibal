@@ -1,6 +1,7 @@
 module Cannibal
   module Actor
     def can?(verb, subject, attribute)
+      true
     end
   end
 end

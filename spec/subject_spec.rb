@@ -12,6 +12,7 @@ describe Cannibal::Subject do
     subject { FooSubject }
 
     it { should respond_to(:allow) }
+    it { should respond_to(:deny) }
   end
 
 end
