@@ -2,10 +2,10 @@ Given /^I have a class named "([^"]*)"$/ do |name|
   eval "class #{name}; end"
 end
 
-When /^I extend "([^"]*)" with "([^"]*)"$/ do |target_klass, extender_module|
+When /^I (extend|include) "([^"]*)" with "([^"]*)"$/ do |message, target_klass, extender_module|
   klass = constantize(target_klass)
   extender = constantize(extender_module)
-  klass.extend(extender)
+  klass.send message.intern, extender
 end
 
 When /^I allow a "([^"]*)" to "([^"]*)" the "([^"]*)" of an? "([^"]*)"$/ do |actor, verb, attribute, subject|
