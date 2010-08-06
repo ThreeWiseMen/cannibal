@@ -6,7 +6,7 @@ Feature: Managing permissions on a subject
   Scenario: Allowing an action on a Class
     Given I have a class named "Item"
     And I have a class named "User"
-    When I include the "Cannibal::Subject" module into "Item"
+    When I extend the "Item" class with "Cannibal::Subject"
     And I declare that a "User" can "edit" the "name" of an "Item"
     And I create a new instance of "User" and assign it to an instance variable "user"
     Then the instance variable "user" should be allowed to "edit" the "name" of an "Item"
@@ -14,7 +14,7 @@ Feature: Managing permissions on a subject
   Scenario: Disallowing an action on a Class
     Given I have a class named "Item"
     And I have a class named "User"
-    When I include the "Cannibal::Subject" module into "Item"
+    When I extend the "Item" class with "Cannibal::Subject"
     And I declare that a "User" cannot "edit" the "created_at" of an "Item"
     And I create a new instance of "User" and assign it to an instance variable "user"
     Then the instance variable "user" should not be allowed to "edit" the "created_at" of an "Item"
