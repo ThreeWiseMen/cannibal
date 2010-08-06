@@ -1,5 +1,5 @@
 module Cannibal
-  class Actor
+  module Actor
     def can? operation, subject
 
       ok = false # default to no permission
