@@ -8,8 +8,12 @@ When /^I extend "([^"]*)" with "([^"]*)"$/ do |target_klass, extender_module|
   klass.extend(extender)
 end
 
-When /^I declare that a "([^"]*)" can "([^"]*)" the "([^"]*)" of an "([^"]*)"$/ do |arg1, arg2, arg3, arg4|
-  pending # express the regexp above with the code you wish you had
+When /^I allow a "([^"]*)" to "([^"]*)" the "([^"]*)" of an? "([^"]*)"$/ do |actor, verb, attribute, subject|
+  actor_class = constantize(actor)
+  verb_sym = verb.intern
+  attr_sym = attribute.intern
+  subject_class = constantize(subject)
+  subject_class.send :allow, actor_class, verb_sym, :attribute
 end
 
 When /^I create a new instance of "([^"]*)" and assign it to an instance variable "([^"]*)"$/ do |klass, ivar_name|
