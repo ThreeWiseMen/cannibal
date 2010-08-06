@@ -1,5 +1,10 @@
 module Cannibal
-  module Actor; end
+  module Actor
+
+    def can?(verb, subject, attribute)
+    end
+
+  end
 
   module Subject
 

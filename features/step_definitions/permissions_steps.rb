@@ -21,8 +21,9 @@ When /^I create a new instance of "([^"]*)" and assign it to an instance variabl
   instance_variable_set(ivar_name.intern, c.new)
 end
 
-Then /^the instance variable "([^"]*)" should be allowed to "([^"]*)" the "([^"]*)" of an "([^"]*)"$/ do |arg1, arg2, arg3, arg4|
-  pending # express the regexp above with the code you wish you had
+Then /^the instance variable "([^"]*)" should be allowed to "([^"]*)" the "([^"]*)" of an? "([^"]*)"$/ do |ivar_name, verb, attribute, subject|
+  actor = instance_variable_get(ivar_name.intern)
+  actor.can?(verb, subject, attribute).should be_true
 end
 
 When /^I declare that a "([^"]*)" cannot "([^"]*)" the "([^"]*)" of an "([^"]*)"$/ do |arg1, arg2, arg3, arg4|
