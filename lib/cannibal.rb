@@ -25,7 +25,7 @@ module Cannibal
     end
 
   end
-  class Subject
+  module Subject
 
     # Initialize permissions class variable, this needs to be distint for each subject
     def self.permissions

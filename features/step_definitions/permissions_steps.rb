@@ -2,16 +2,10 @@ Given /^I have a class named "([^"]*)"$/ do |name|
   eval "class #{name}; end"
 end
 
-When /^I include the "([^"]*)" module into "([^"]*)"$/ do |mod, obj|
-  m = constantize(mod)
-  o = constantize(obj)
-  o.class.send :include, m
-end
-
-When /^I extend the "([^"]*)" class with "([^"]*)"$/ do |klass, obj|
-  c = constantize(klass)
-  o = constantize(obj)
-  c.send :extend, o
+When /^I extend "([^"]*)" with "([^"]*)"$/ do |target_klass, extender_module|
+  klass = constantize(target_klass)
+  extender = constantize(extender_module)
+  klass.extend(extender)
 end
 
 When /^I declare that a "([^"]*)" can "([^"]*)" the "([^"]*)" of an "([^"]*)"$/ do |arg1, arg2, arg3, arg4|
