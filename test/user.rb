@@ -1,9 +1,7 @@
 class User
-  include Cannibal::Actor
+  extend Cannibal::Actor
 
   # This class will fill the Actor role in an Actor / Subject evaluation
-
-#  can :edit do
-#  end
+  # Declarations for permissions should be specified on the Subject
 
 end
