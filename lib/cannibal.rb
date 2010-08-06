@@ -14,6 +14,18 @@ module Cannibal
       end
       def deny(actor, verb, attribute)
       end
+      def permissions
+        @@perms ||= {} #Is this going to give us the correct @@perms object?
+      end
+      def permissions_for actor_class, subject_class
+        unless permissions.include? :actor_class
+          permissions[:actor_class] = {}
+        end
+        unless permissions[:actor_class].include? subject_class
+          permissions[:actor_class][:subject_class] = {}
+        end
+        permissions[:actor_class][:subject_class]
+      end
     end
     
     def self.included(klass)
@@ -26,14 +38,6 @@ module Cannibal
     # end
 
     # permissions[:actor_class][:subject_class] gives verbs hash
-    # def self.permissions_for actor_class, subject_class
-    #   unless permissions.include? :actor_class
-    #     permissions[:actor_class] = {}
-    #   end
-    #   unless permissions[:actor_class].include? subject_class
-    #     permissions[:actor_class][:subject_class] = {}
-    #   end
-    #   permissions[:actor_class][:subject_class]
     # end
     # 
   end
