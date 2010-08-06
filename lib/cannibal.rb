@@ -1,8 +1,10 @@
 module Cannibal
+  module Actor; end
+
   module Subject
 
     module ClassMethods
-      def allow
+      def allow(actor, verb, attribute)
       end
     end
     
