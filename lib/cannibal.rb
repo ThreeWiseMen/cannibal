@@ -2,6 +2,7 @@ module Cannibal
   module Actor
 
     def can?(verb, subject, attribute)
+      true
     end
 
   end
@@ -10,6 +11,8 @@ module Cannibal
 
     module ClassMethods
       def allow(actor, verb, attribute)
+      end
+      def deny(actor, verb, attribute)
       end
     end
     

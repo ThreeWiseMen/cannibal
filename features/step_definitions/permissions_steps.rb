@@ -13,7 +13,7 @@ When /^I allow a "([^"]*)" to "([^"]*)" the "([^"]*)" of an? "([^"]*)"$/ do |act
   verb_sym = verb.intern
   attr_sym = attribute.intern
   subject_class = constantize(subject)
-  subject_class.send :allow, actor_class, verb_sym, :attribute
+  subject_class.send :allow, actor_class, verb_sym, attr_sym
 end
 
 When /^I create a new instance of "([^"]*)" and assign it to an instance variable "([^"]*)"$/ do |klass, ivar_name|
@@ -26,8 +26,12 @@ Then /^the instance variable "([^"]*)" should be allowed to "([^"]*)" the "([^"]
   actor.can?(verb, subject, attribute).should be_true
 end
 
-When /^I declare that a "([^"]*)" cannot "([^"]*)" the "([^"]*)" of an "([^"]*)"$/ do |arg1, arg2, arg3, arg4|
-  pending # express the regexp above with the code you wish you had
+When /^I declare that a "([^"]*)" cannot "([^"]*)" the "([^"]*)" of an "([^"]*)"$/ do |actor, verb, attribute, subject|
+  actor_class = constantize(actor)
+  verb_sym = verb.intern
+  attr_sym = attribute.intern
+  subject_class = constantize(subject)
+  subject_class.send :deny, actor_class, verb_sym, attr_sym
 end
 
 Then /^the instance variable "([^"]*)" should not be allowed to "([^"]*)" the "([^"]*)" of an "([^"]*)"$/ do |arg1, arg2, arg3, arg4|
