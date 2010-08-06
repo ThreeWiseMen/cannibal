@@ -29,8 +29,8 @@ describe Cannibal::Subject do
 
     subject { FooSubject }
 
-    it { FooActor.can?(FooSubject, :view, :name).should be_true }
-    it { FooActor.can?(FooSubject, :edit, :name).should be_false }
+    it { FooActor.can?(:view, FooSubject, :name).should be_true }
+    it { FooActor.can?(:edit, FooSubject, :name).should be_false }
   end
 
 end

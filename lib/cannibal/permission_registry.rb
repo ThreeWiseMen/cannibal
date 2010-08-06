@@ -13,7 +13,12 @@ module Cannibal
     end
 
     def allowed?(actor, verb, subject)
-      verb_hash(actor, subject, verb)[:perm] || false
+      h = verb_hash(actor, subject, verb)
+      if h.has_key? :perm
+        h[:perm]
+      else
+        false
+      end
     end
 
     def permstore
