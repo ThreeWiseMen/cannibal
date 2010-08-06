@@ -1,8 +1,24 @@
 module Cannibal
   module Actor
-    def can?(verb, subject, attribute)
-      true
+
+    module ClassMethods
+      def can?(verb, subject, attribute)
+        permissions.allowed?(self, verb, subject)
+      end
+
+      def permissions
+        @@registry = Cannibal::PermissionRegistry.instance
+      end
     end
+
+    def self.included(klass)
+      klass.extend ClassMethods
+    end
+
+    def can?(verb, subject, attribute)
+      permissions.allowed?(self, verb, subject)
+    end
+
   end
 end
 

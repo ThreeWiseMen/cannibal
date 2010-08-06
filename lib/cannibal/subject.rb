@@ -5,24 +5,17 @@ module Cannibal
     module ClassMethods
 
       def allow(actor, verb, attribute)
+        permissions.allow(actor, verb, self)
       end
 
       def deny(actor, verb, attribute)
+        permissions.deny(actor, verb, self)
       end
 
       def permissions
-        @@perms ||= {} #Is this going to give us the correct @@perms object?
+        @registry ||= Cannibal::PermissionRegistry.instance
       end
 
-      def permissions_for(actor_class, subject_class)
-        unless permissions.include? :actor_class
-          permissions[:actor_class] = {}
-        end
-        unless permissions[:actor_class].include? subject_class
-          permissions[:actor_class][:subject_class] = {}
-        end
-        permissions[:actor_class][:subject_class]
-      end
     end
   
     def self.included(klass)

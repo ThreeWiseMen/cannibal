@@ -14,7 +14,6 @@ describe Cannibal::Subject do
     it { should respond_to(:allow) }
     it { should respond_to(:deny) }
     it { should respond_to(:permissions) }
-    it { should respond_to(:permissions_for) }
   end
 
   context "when a simple permission is set" do
@@ -24,14 +23,14 @@ describe Cannibal::Subject do
       end
       class FooSubject
         include Cannibal::Subject
-        allow FooActor, :edit, :name
+        allow FooActor, :view, :name
       end
     end
 
     subject { FooSubject }
 
-    it { FooActor.new.can?(FooSubject, :edit, :name).should be_true }
-    it { FooActor.new.can?(FooSubject, :edit, :phone).should be_false }
+    it { FooActor.can?(FooSubject, :view, :name).should be_true }
+    it { FooActor.can?(FooSubject, :edit, :name).should be_false }
   end
 
 end
