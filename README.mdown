@@ -3,6 +3,33 @@ Cannibal
 
 A simple permissions system for declaring and querying permissions between Ruby objects.
 
+Background
+----------
+
+Cannibal is based around defining interactions between Actors and Subjects.
+
+An Actor participates in your system as an agent that "does" things. Cannibal lets you declare what
+each Actor can do, and Actors are queried to determine whether or not they are permitted to perform
+a particular action.
+
+A Subject participates in your system as something that is acted upon. You declare for each Subject
+the conditions under which each Actor may or may not interact with it.
+
+If for example you are using Cannibal in a Rails application, an example of an Actor might be a
+User model. An example of a Subject might be a Task model. You may want all Users in the system to
+be able to view all of the available Tasks, but you may want to restrict tasks to only be editable
+by their creators.
+
+Permissions can be set at various levels, starting at the Class level and getting finer grained
+right down to the field or method level of your models.
+
+In addition, you can specify static permissions (no User may modify a Task) or dynamic permissions
+that are evaluated at query time (ie. a specific user may or may not be able to modify a specific
+task, based on whatever rules you put forth).
+
+Sample Scenarios
+----------------
+
 Class-level permissions:
 
     class User
@@ -80,3 +107,4 @@ Actor and subject object-to-object level permissions:
     puts "Back off!" unless @user_b.can? :edit, @thing
     puts "Yay!" if @user_a.can? :edit, @thing
     puts "Yay!" if @admin.can? :edit, @thing
+
