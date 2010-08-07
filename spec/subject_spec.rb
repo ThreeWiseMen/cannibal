@@ -95,8 +95,8 @@ describe Cannibal::Subject do
         allow_obj({
           :actor => RoleActor,
           :verb => :edit,
-          :proc => Proc.new{ |actor,subject|
-            if actor.role == 'administrator' or actor == subject.owner
+          :proc => Proc.new { |actor,subject|
+            if actor.role == 'administrator' || actor == subject.owner
               true
             else
               false

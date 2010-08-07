@@ -58,13 +58,13 @@ module Cannibal
       @perms ||= {}
     end
 
-    def verb_hash actor, subject, verb
+    def verb_hash(actor, subject, verb)
       actor_hash = hash_or_init permstore, actor
       subject_hash = hash_or_init actor_hash, subject
       hash_or_init subject_hash, verb
     end
 
-    def hash_or_init hash, key
+    def hash_or_init(hash, key)
       unless hash.include? key
         hash[key] = {}
       end

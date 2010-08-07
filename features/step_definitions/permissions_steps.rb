@@ -93,7 +93,7 @@ When /^I allow "([^"]*)" to "([^"]*)" the "([^"]*)" of "([^"]*)" if they are the
       :verb => verb_sym,
       :subject => subject_class,
       :proc => Proc.new{ |actor, subject|
-        if actor.role == role or actor == (subject.send attribute_actor_sym)
+        if actor.role == role || actor == (subject.send attribute_actor_sym)
           true
         else
           false
