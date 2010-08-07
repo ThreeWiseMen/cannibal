@@ -48,3 +48,35 @@ Actor object-level permissions:
     puts "Back off!" unless @user.can? :edit, @thing
     puts "Yay!" if @admin.can? :edit, @thing
 
+Actor and subject object-to-object level permissions:
+
+    class User
+      include Cannibal::Actor
+      attr_accessor :role
+    end
+
+    class Thing
+      include Cannibal::Subject
+      attr_accessor :owner
+      permission({
+        :actor => User,
+        :verb => :edit,
+        :proc => Proc.new { |user, thing|
+          if user.role == 'administrator' or user == thing.owner
+            true
+          else
+            false
+          end
+        }
+      })
+    end
+
+    @user_a = User.new; @user.role = 'user'
+    @user_b = User.new; @user.role = 'user'
+    @admin = User.new; @user.role = 'administrator'
+
+    @thing = Thing.new; @thing.owner = @user_a
+
+    puts "Back off!" unless @user_b.can? :edit, @thing
+    puts "Yay!" if @user_a.can? :edit, @thing
+    puts "Yay!" if @admin.can? :edit, @thing
