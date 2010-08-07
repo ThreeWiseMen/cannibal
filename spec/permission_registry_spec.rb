@@ -6,8 +6,7 @@ describe Cannibal::PermissionRegistry do
     subject { Cannibal::PermissionRegistry.instance }
     it { should_not be_nil }
     it { should be_instance_of Cannibal::PermissionRegistry }
-    it { should respond_to :allow_class }
-    it { should respond_to :deny_class }
+    it { should respond_to :set }
     it { should respond_to :allowed? }
   end
 
@@ -19,7 +18,7 @@ describe Cannibal::PermissionRegistry do
     end
 
     it "should register a permission" do
-      @registry.allow_class(Actor, :edit, Subject)
+      @registry.set({:actor => Actor, :verb => :edit, :subject => Subject, :perm => true})
       @registry.allowed?(Actor, :edit, Subject).should be_true
       @registry.allowed?(Actor, :delete, Subject).should be_false
     end
@@ -35,7 +34,7 @@ describe Cannibal::PermissionRegistry do
     end
 
     it "should register a permission" do
-      @registry.allow(
+      @registry.set(
         :actor => Actor,
         :verb => :edit,
         :subject => Subject,
@@ -64,7 +63,7 @@ describe Cannibal::PermissionRegistry do
     end
 
     it "should register a permission" do
-      @registry.allow(
+      @registry.set(
         :actor => Actor,
         :verb => :edit,
         :subject => Subject,

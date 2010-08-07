@@ -4,17 +4,27 @@ module Cannibal
 
     module ClassMethods
 
-      def allow(actor, verb, attribute)
-        permissions.allow_class(actor, verb, self)
+      def allow(actor, verb, attribute=nil)
+        permissions.set(
+          :actor => actor,
+          :verb => verb,
+          :subject => self,
+          :perm => true
+        )
       end
 
-      def allow_obj(options)
+      def deny(actor, verb, attribute=nil)
+        permissions.set(
+          :actor => actor,
+          :verb => verb,
+          :subject => self,
+          :perm => false
+        )
+      end
+
+      def permission(options)
         options[:subject] = self
-        permissions.allow(options)
-      end
-
-      def deny(actor, verb, attribute)
-        permissions.deny_class(actor, verb, self)
+        permissions.set(options)
       end
 
       def permissions

@@ -58,7 +58,7 @@ When /^I declare that only a "([^"]*)" with the role "([^"]*)" can "([^"]*)" an 
   subject_class = constantize(subject)
   verb_sym = verb.intern
   subject_class.send(
-    :allow_obj,
+    :permission,
     {
       :actor => actor_class,
       :verb => verb_sym,
@@ -87,7 +87,7 @@ When /^I allow "([^"]*)" to "([^"]*)" the "([^"]*)" of "([^"]*)" if they are the
   attribute_sym = attribute.intern
   attribute_actor_sym = attribute_actor.intern
   subject_class.send(
-    :allow_obj,
+    :permission,
     {
       :actor => actor_class,
       :verb => verb_sym,
@@ -110,7 +110,7 @@ When /^I disallow "([^"]*)" to "([^"]*)" the "([^"]*)" of an "([^"]*)" unless th
   attribute_sym = attribute.intern
   attribute_actor_sym = attribute_actor.intern
   subject_class.send(
-    :allow_obj,
+    :permission,
     {
       :actor => actor_class,
       :verb => verb_sym,

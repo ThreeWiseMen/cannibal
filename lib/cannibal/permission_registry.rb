@@ -4,22 +4,16 @@ module Cannibal
   class PermissionRegistry
     include Singleton
 
-    def allow_class(actor, verb, subject)
-      verb_hash(actor, subject, verb)[:perm] = true
-    end
-
-    def deny_class(actor, verb, subject)
-      verb_hash(actor, subject, verb)[:perm] = false
-    end
-
-    def allow(options)
+    def set(options)
       actor = options[:actor]
       verb = options[:verb]
       subject = options[:subject]
       actor_proc = options[:actor_proc]
       verb_hash(actor, subject, verb)[:actor_proc] = actor_proc unless actor_proc.nil?
-      proc = options[:proc]
-      verb_hash(actor, subject, verb)[:proc] = proc unless proc.nil?
+      gproc = options[:proc]
+      verb_hash(actor, subject, verb)[:proc] = gproc unless gproc.nil?
+      perm = options[:perm]
+      verb_hash(actor, subject, verb)[:perm] = perm unless perm.nil?
     end
 
     def allowed?(actor, verb, subject)

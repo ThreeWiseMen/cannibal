@@ -61,7 +61,7 @@ describe Cannibal::Subject do
       end
       class RoleSubject
         include Cannibal::Subject
-        allow_obj({
+        permission({
           :actor => RoleActor,
           :verb => :edit,
           :actor_proc => Proc.new{ |actor|
@@ -92,7 +92,7 @@ describe Cannibal::Subject do
       class OwnableSubject
         include Cannibal::Subject
         attr_accessor :owner
-        allow_obj({
+        permission({
           :actor => RoleActor,
           :verb => :edit,
           :proc => Proc.new { |actor,subject|
