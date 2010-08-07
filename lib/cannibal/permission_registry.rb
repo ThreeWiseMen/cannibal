@@ -55,8 +55,8 @@ module Cannibal
       end
 
       ph = verb_hash(actor_class, subject_class, verb)
-puts "\n########### PERM HASH FOR #{actor_class} #{subject_class} #{verb}"
-puts "#{ph.inspect}\n\n"
+#puts "\n########### PERM HASH FOR #{actor_class} #{subject_class} #{verb} #{attribute}"
+#puts "#{ph.inspect}\n\n"
 
       # Check class perms first
       if ph.has_key? :perm
@@ -78,10 +78,14 @@ puts "#{ph.inspect}\n\n"
       end
 
       unless attribute.nil?
+#        puts "Evaluating attribute #{attribute}"
         ah = attribute_hash(actor_class, subject_class, verb)
+#        puts ah.inspect
         if ah.has_key? attribute
+#          puts "Found key #{attribute}"
           ok = ah[attribute]
         end
+#        puts "Found #{ok}"
       end
 
       ok

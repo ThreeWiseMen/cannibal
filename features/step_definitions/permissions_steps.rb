@@ -35,7 +35,8 @@ Then /^the instance variable "([^"]*)" should be allowed to "([^"]*)" the "([^"]
   actor = instance_variable_get(ivar_name.intern)
   verb_sym = verb.intern
   subject_class = constantize(subject)
-  actor.can?(verb_sym, subject_class, attribute).should be_true
+  attr_sym = attribute.intern
+  actor.can?(verb_sym, subject_class, attr_sym).should be_true
 end
 
 When /^I declare that a "([^"]*)" cannot "([^"]*)" the "([^"]*)" of an "([^"]*)"$/ do |actor, verb, attribute, subject|
@@ -130,13 +131,13 @@ Then /^the instance variable "([^"]*)" should be allowed to "([^"]*)" the "([^"]
   actor = instance_variable_get(ivar_name.intern)
   subject = instance_variable_get(ivar_subject.intern)
   verb_sym = verb.intern
-  actor.can?(verb_sym, subject, :name).should be_true
+  actor.can?(verb_sym, subject).should be_true
 end
 
 Then /^the instance variable "([^"]*)" should not be allowed to "([^"]*)" the "([^"]*)"$/ do |ivar_name, verb, ivar_subject|
   actor = instance_variable_get(ivar_name.intern)
   subject = instance_variable_get(ivar_subject.intern)
   verb_sym = verb.intern
-  actor.can?(verb_sym, subject, :name).should be_false
+  actor.can?(verb_sym, subject).should be_false
 end
 
