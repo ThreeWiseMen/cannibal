@@ -16,7 +16,7 @@ describe Cannibal::Subject do
     it { should respond_to(:permissions) }
   end
 
-  context "when a simple permission is set" do
+  context "when a simple class-level permission is set" do
     before(:all) do
       class FooActor
         include Cannibal::Actor
@@ -27,10 +27,30 @@ describe Cannibal::Subject do
       end
     end
 
-    subject { FooSubject }
+    it "should allow FooActor to view FooSubject's name" do
+      FooActor.can?(:view, FooSubject, :name).should be_true
+    end
 
-    it { FooActor.can?(:view, FooSubject, :name).should be_true }
-    it { FooActor.can?(:edit, FooSubject, :name).should be_false }
+    it "should not allow FooActor to edit FooSubject's name" do
+      FooActor.can?(:edit, FooSubject, :name).should be_false
+    end
+  end
+
+  context "when a simple object-level permission is set" do
+    before(:all) do
+      class BarActor
+        include Cannibal::Actor
+      end
+      class BarSubject
+        include Cannibal::Subject
+        allow BarActor, :view, :name
+      end
+    end
+
+    it "should allow BarActor to view BarSubject's name" do
+      BarActor.new.can?(:view, BarSubject, :name).should be_true
+    end
+
   end
 
 end

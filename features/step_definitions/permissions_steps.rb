@@ -23,7 +23,9 @@ end
 
 Then /^the instance variable "([^"]*)" should be allowed to "([^"]*)" the "([^"]*)" of an? "([^"]*)"$/ do |ivar_name, verb, attribute, subject|
   actor = instance_variable_get(ivar_name.intern)
-  actor.can?(verb, subject, attribute).should be_true
+  verb_sym = verb.intern
+  subject_class = constantize(subject)
+  actor.can?(verb_sym, subject_class, attribute).should be_true
 end
 
 When /^I declare that a "([^"]*)" cannot "([^"]*)" the "([^"]*)" of an "([^"]*)"$/ do |actor, verb, attribute, subject|

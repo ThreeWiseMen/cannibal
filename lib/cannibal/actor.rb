@@ -16,7 +16,7 @@ module Cannibal
     end
 
     def can?(verb, subject, attribute)
-      permissions.allowed?(self, verb, subject)
+      self.class.permissions.allowed?(self.class, verb, subject)
     end
 
   end
