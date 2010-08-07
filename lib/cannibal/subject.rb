@@ -9,6 +9,7 @@ module Cannibal
           :actor => actor,
           :verb => verb,
           :subject => self,
+          :attribute => attribute,
           :perm => true
         )
       end
@@ -18,6 +19,7 @@ module Cannibal
           :actor => actor,
           :verb => verb,
           :subject => self,
+          :attribute => attribute,
           :perm => false
         )
       end

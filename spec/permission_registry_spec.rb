@@ -13,20 +13,22 @@ describe Cannibal::PermissionRegistry do
   context "stores class level permissions" do
     before(:all) do
       @registry = Cannibal::PermissionRegistry.instance
+      @registry.reset
       class Actor; end
       class Subject; end
     end
 
     it "should register a permission" do
       @registry.set({:actor => Actor, :verb => :edit, :subject => Subject, :perm => true})
-      @registry.allowed?(Actor, :edit, Subject).should be_true
-      @registry.allowed?(Actor, :delete, Subject).should be_false
+      @registry.allowed?(Actor, Subject, :edit).should be_true
+      @registry.allowed?(Actor, Subject, :delete).should be_false
     end
   end
 
   context "stores object level permissions" do
     before(:all) do
       @registry = Cannibal::PermissionRegistry.instance
+      @registry.reset
       class Actor; attr_accessor :role; end
       class Subject; end
       @admin = Actor.new; @admin.role = 'administrator'
@@ -46,14 +48,15 @@ describe Cannibal::PermissionRegistry do
           end
         }
       )
-      @registry.allowed?(@admin, :edit, Subject).should be_true
-      @registry.allowed?(@user, :edit, Subject).should be_false
+      @registry.allowed?(@admin, Subject, :edit).should be_true
+      @registry.allowed?(@user, Subject, :edit).should be_false
     end
   end
 
   context "stores object-to-object level permissions" do
     before(:all) do
       @registry = Cannibal::PermissionRegistry.instance
+      @registry.reset
       class Actor; attr_accessor :role; end
       class Subject; attr_accessor :owner; end
       @admin = Actor.new; @admin.role = 'administrator'
@@ -75,9 +78,29 @@ describe Cannibal::PermissionRegistry do
           end
         }
       )
-      @registry.allowed?(@admin, :edit, @subject).should be_true
-      @registry.allowed?(@user_a, :edit, @subject).should be_true
-      @registry.allowed?(@user_b, :edit, @subject).should be_false
+      @registry.allowed?(@admin, @subject, :edit).should be_true
+      @registry.allowed?(@user_a, @subject, :edit).should be_true
+      @registry.allowed?(@user_b, @subject, :edit).should be_false
+    end
+  end
+
+  context "stores object attribute level permissions" do
+    before(:all) do
+      @registry = Cannibal::PermissionRegistry.instance
+      @registry.reset
+      class Actor; end
+      class Subject; attr_accessor :name, :phone; end
+    end
+    it "should register an attribute permission" do
+      @registry.set({
+        :actor => Actor,
+        :verb => :edit,
+        :subject => Subject,
+        :perm => true,
+        :attribute => :phone
+      })
+      @registry.allowed?(Actor, Subject, :edit, :phone).should be_true
+      @registry.allowed?(Actor, Subject, :edit, :name).should be_false
     end
   end
 

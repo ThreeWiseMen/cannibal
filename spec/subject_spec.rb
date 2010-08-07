@@ -23,16 +23,16 @@ describe Cannibal::Subject do
       end
       class FooSubject
         include Cannibal::Subject
-        allow FooActor, :view, :name
+        allow FooActor, :view
       end
     end
 
     it "should allow FooActor to view FooSubject's name" do
-      FooActor.can?(:view, FooSubject, :name).should be_true
+      FooActor.can?(:view, FooSubject).should be_true
     end
 
     it "should not allow FooActor to edit FooSubject's name" do
-      FooActor.can?(:edit, FooSubject, :name).should be_false
+      FooActor.can?(:edit, FooSubject).should be_false
     end
   end
 
@@ -43,12 +43,12 @@ describe Cannibal::Subject do
       end
       class BarSubject
         include Cannibal::Subject
-        allow BarActor, :view, :name
+        allow BarActor, :view
       end
     end
 
     it "should allow BarActor to view BarSubject's name" do
-      BarActor.new.can?(:view, BarSubject, :name).should be_true
+      BarActor.new.can?(:view, BarSubject).should be_true
     end
 
   end
@@ -78,8 +78,8 @@ describe Cannibal::Subject do
     end
 
     it "should register a permission" do
-      @admin.can?(:edit, RoleSubject, :name).should be_true
-      @user.can?(:edit, RoleSubject, :name).should be_false
+      @admin.can?(:edit, RoleSubject).should be_true
+      @user.can?(:edit, RoleSubject).should be_false
     end
   end
 
@@ -111,9 +111,28 @@ describe Cannibal::Subject do
     end
 
     it "should register a permission" do
-      @admin.can?(:edit, @subject, :name).should be_true
-      @user_a.can?(:edit, @subject, :name).should be_true
-      @user_b.can?(:edit, @subject, :name).should be_false
+      @admin.can?(:edit, @subject).should be_true
+      @user_a.can?(:edit, @subject).should be_true
+      @user_b.can?(:edit, @subject).should be_false
+    end
+  end
+
+  context "when I disallow an attribute level permission" do
+    before(:all) do
+      class User
+        include Cannibal::Actor
+      end
+      class Thing
+        include Cannibal::Subject
+        attr_accessor :name, :phone
+        allow User, :edit, :phone
+      end
+    end
+    it "should allow User to edit Thing's phone" do
+      User.can?(:edit, Thing, :phone).should be_true
+    end
+    it "should not allow User to edit Thing's name" do
+      User.can?(:edit, Thing, :name).should be_false
     end
   end
 
