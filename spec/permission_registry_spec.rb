@@ -69,7 +69,7 @@ describe Cannibal::PermissionRegistry do
         :verb => :edit,
         :subject => Subject,
         :proc => Proc.new{ |actor, subject|
-          if actor.role == 'administrator' or actor == subject.owner
+          if actor.role == 'administrator' || actor == subject.owner
             true
           else
             false
