@@ -103,6 +103,29 @@ When /^I allow "([^"]*)" to "([^"]*)" the "([^"]*)" of "([^"]*)" if they are the
   )
 end
 
+When /^I disallow "([^"]*)" to "([^"]*)" the "([^"]*)" of an "([^"]*)" unless they are the "([^"]*)"$/ do |actor, verb, attribute, subject, attribute_actor|
+  actor_class = constantize(actor)
+  subject_class = constantize(subject)
+  verb_sym = verb.intern
+  attribute_sym = attribute.intern
+  attribute_actor_sym = attribute_actor.intern
+  subject_class.send(
+    :allow_obj,
+    {
+      :actor => actor_class,
+      :verb => verb_sym,
+      :subject => subject_class,
+      :proc => Proc.new{ |actor, subject|
+        if actor == (subject.send attribute_actor_sym)
+          true
+        else
+          false
+        end
+      }
+    }
+  )
+end
+
 Then /^the instance variable "([^"]*)" should be allowed to "([^"]*)" the "([^"]*)"$/ do |ivar_name, verb, ivar_subject|
   actor = instance_variable_get(ivar_name.intern)
   subject = instance_variable_get(ivar_subject.intern)
