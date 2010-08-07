@@ -55,6 +55,8 @@ module Cannibal
       end
 
       ph = verb_hash(actor_class, subject_class, verb)
+puts "\n########### PERM HASH FOR #{actor_class} #{subject_class} #{verb}"
+puts "#{ph.inspect}\n\n"
 
       # Check class perms first
       if ph.has_key? :perm
