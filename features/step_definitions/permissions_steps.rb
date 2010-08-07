@@ -77,3 +77,22 @@ When /^I declare that only a "([^"]*)" with the role "([^"]*)" can "([^"]*)" an 
   )
 end
 
+When /^I set the "([^"]*)" attribute of the instance variable "([^"]*)" to the instance variable "([^"]*)"$/ do |attribute, ivar_name, ivar_value|
+  obj = instance_variable_get(ivar_name.intern)
+  value = instance_variable_get(ivar_value.intern)
+  attribute_sym = "#{attribute}=".intern
+  obj.send attribute_sym, value
+end
+
+When /^I allow "([^"]*)" to "([^"]*)" the "([^"]*)" of "([^"]*)" if they are the "([^"]*)" or have the role "([^"]*)"$/ do |arg1, arg2, arg3, arg4, arg5, arg6|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^the instance variable "([^"]*)" should be allowed to "([^"]*)" the "([^"]*)"$/ do |arg1, arg2, arg3|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^the instance variable "([^"]*)" should not be allowed to "([^"]*)" the "([^"]*)"$/ do |arg1, arg2, arg3|
+  pending # express the regexp above with the code you wish you had
+end
+
