@@ -1,15 +1,50 @@
 Cannibal
 ========
 
-A simple permissions system for Ruby objects.
+A simple permissions system for declaring and querying permissions between Ruby objects.
 
 Class-level permissions:
 
-  class User
-    include Cannibal::Actor
-  end
+    class User
+      include Cannibal::Actor
+    end
 
-  class Thing
-    include Cannibal::Subject
-    allow User, :edit
-  end
+    class Thing
+      include Cannibal::Subject
+      allow User, :edit
+    end
+
+    @user = User.new
+    @thing = Thing.new
+
+    puts "Yay!" if @user.can? :edit, @thing
+
+Actor object-level permissions:
+
+    class User
+      include Cannibal::Actor
+      attr_accessor :role
+    end
+
+    class Thing
+      include Cannibal::Subject
+      permission({
+        :actor => User,
+        :verb => :edit,
+        :actor_proc => Proc.new { |user|
+          if user.role == 'administrator'
+            true
+          else
+            false
+          end
+        }
+      })
+    end
+
+    @user = User.new; @user.role = 'user'
+    @admin = User.new; @user.role = 'administrator'
+    @thing = Thing.new
+
+    puts "Back off!" unless @user.can? :edit, @thing
+    puts "Yay!" if @admin.can? :edit, @thing
+
