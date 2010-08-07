@@ -2,12 +2,8 @@ Given /^I have a class named "([^"]*)"$/ do |name|
   eval "class #{name}; end"
 end
 
-Given /^I have a class named "([^"]*)" that has a role$/ do |name|
-  eval "class #{name}; attr_accessor :role; end"
-end
-
-Given /^I have a class named "([^"]*)" that has an owner$/ do |name|
-  eval "class #{name}; attr_accessor :owner; end"
+Given /^I add the attribute "([^"]*)" to the "([^"]*)" class$/ do |attribute, name|
+  eval "class #{name}; attr_accessor :#{attribute}; end"
 end
 
 When /^I (extend|include) "([^"]*)" with "([^"]*)"$/ do |message, target_klass, extender_module|

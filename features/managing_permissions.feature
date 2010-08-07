@@ -23,7 +23,8 @@ Feature: Managing permissions on a subject
 
   Scenario: Allowing an action on an object by an actor with a specific role
     Given I have a class named "Item"
-    And I have a class named "User" that has a role
+    And I have a class named "User"
+    And I add the attribute "role" to the "User" class
     When I extend "Item" with "Cannibal::Subject"
     And I extend "User" with "Cannibal::Actor"
     And I create a new instance of "User" and assign it to an instance variable "@admin"
@@ -35,8 +36,10 @@ Feature: Managing permissions on a subject
     And the instance variable "@user" should not be allowed to "edit" the "name" of an "Item"
 
   Scenario: Allowing an action on an object
-    Given I have a class named "Item" that has an owner
-    And I have a class named "User" that has a role
+    Given I have a class named "Item"
+    And I add the attribute "owner" to the "Item" class
+    And I have a class named "User"
+    And I add the attribute "role" to the "User" class
     When I extend "Item" with "Cannibal::Subject"
     And I extend "User" with "Cannibal::Actor"
     And I create a new instance of "User" and assign it to an instance variable "@user_a"
