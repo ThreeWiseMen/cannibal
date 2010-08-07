@@ -52,4 +52,34 @@ describe Cannibal::PermissionRegistry do
     end
   end
 
+  context "stores object-to-object level permissions" do
+    before(:all) do
+      @registry = Cannibal::PermissionRegistry.instance
+      class Actor; attr_accessor :role; end
+      class Subject; attr_accessor :owner; end
+      @admin = Actor.new; @admin.role = 'administrator'
+      @user_a = Actor.new; @user_a.role = 'user'
+      @user_b = Actor.new; @user_b.role = 'user'
+      @subject = Subject.new; @subject.owner = @user_a
+    end
+
+    it "should register a permission" do
+      @registry.allow(
+        :actor => Actor,
+        :verb => :edit,
+        :subject => Subject,
+        :proc => Proc.new{ |actor, subject|
+          if actor.role == 'administrator' or actor == subject.owner
+            true
+          else
+            false
+          end
+        }
+      )
+      @registry.allowed?(@admin, :edit, @subject).should be_true
+      @registry.allowed?(@user_a, :edit, @subject).should be_true
+      @registry.allowed?(@user_b, :edit, @subject).should be_false
+    end
+  end
+
 end

@@ -17,7 +17,9 @@ module Cannibal
       verb = options[:verb]
       subject = options[:subject]
       actor_proc = options[:actor_proc]
-      verb_hash(actor, subject, verb)[:actor_proc] = actor_proc
+      verb_hash(actor, subject, verb)[:actor_proc] = actor_proc unless actor_proc.nil?
+      proc = options[:proc]
+      verb_hash(actor, subject, verb)[:proc] = proc unless proc.nil?
     end
 
     def allowed?(actor, verb, subject)
@@ -38,6 +40,14 @@ module Cannibal
         h = verb_hash(actor.class, subject, verb)
         if h.has_key? :actor_proc
           ok = h[:actor_proc].call actor
+        end
+      end
+
+      unless subject.is_a? Class
+        # Allow object-to-object perms to override
+        h = verb_hash(actor.class, subject.class, verb)
+        if h.has_key? :proc
+          ok = h[:proc].call actor, subject
         end
       end
 
