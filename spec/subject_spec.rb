@@ -53,4 +53,34 @@ describe Cannibal::Subject do
 
   end
 
+  context "when a run-time object-level permission is set" do
+    before(:all) do
+      class RoleActor
+        include Cannibal::Actor
+        attr_accessor :role
+      end
+      class RoleSubject
+        include Cannibal::Subject
+        allow_obj({
+          :actor => RoleActor,
+          :verb => :edit,
+          :actor_proc => Proc.new{ |actor|
+            if actor.role == 'administrator'
+              true
+            else
+              false
+            end
+          }
+        })
+      end
+      @admin = RoleActor.new; @admin.role = 'administrator'
+      @user = RoleActor.new; @user.role = 'user'
+    end
+
+    it "should register a permission" do
+      @admin.can?(:edit, RoleSubject, :name).should be_true
+      @user.can?(:edit, RoleSubject, :name).should be_false
+    end
+  end
+
 end
