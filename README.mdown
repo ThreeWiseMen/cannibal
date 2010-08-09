@@ -12,8 +12,12 @@ An Actor participates in your system as an agent that "does" things. Cannibal le
 each Actor can do, and Actors are queried to determine whether or not they are permitted to perform
 a particular action.
 
+You can turn any class into an Actor by including Cannibal::Actor within it.
+
 A Subject participates in your system as something that is acted upon. You declare for each Subject
 the conditions under which each Actor may or may not interact with it.
+
+You can turn any class into a Subject by including Cannibal::Actor within it.
 
 If for example you are using Cannibal in a Rails application, an example of an Actor might be a
 User model. An example of a Subject might be a Task model. You may want all Users in the system to

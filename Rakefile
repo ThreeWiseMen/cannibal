@@ -10,7 +10,7 @@ Cucumber::Rake::Task.new(:cucumber)
 spec = Gem::Specification.new do |s|
 	s.platform          = Gem::Platform::RUBY
         s.name              = "cannibal"
-        s.version           = "1.0.0"
+        s.version           = "0.5.0"
         s.author            = "Three Wise Men"
         s.email             = "info @nospam@ threewisemen.ca"
         s.summary           = "Permission framework for Ruby objects"
