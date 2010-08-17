@@ -136,4 +136,51 @@ describe Cannibal::Subject do
     end
   end
 
+  context "when I allow an actor object on attribute level permission" do
+    before(:all) do
+      Cannibal::PermissionRegistry.instance.reset
+      class User
+        include Cannibal::Actor
+        attr_accessor :role
+      end
+      class Thing
+        include Cannibal::Subject
+        attr_accessor :name, :phone, :email
+        allow User, :view
+        permission({
+          :actor => User,
+          :verb => :edit,
+          :subject => Thing,
+          :attribute => [ :phone, :email ],
+          :actor_proc => Proc.new{ |actor|
+            if actor.role == 'administrator'
+              true
+            else
+              false
+            end
+          }
+        })
+      end
+      @admin = User.new; @admin.role = 'administrator'
+      @user = User.new; @user.role = 'user'
+      @thing = Thing.new
+    end
+    it "should allow @user to view all attributes but not edit" do
+      @user.can?(:view, @thing, :name).should be_true
+      @user.can?(:view, @thing, :phone).should be_true
+      @user.can?(:view, @thing, :email).should be_true
+      @user.can?(:edit, @thing, :name).should be_false
+      @user.can?(:edit, @thing, :phone).should be_false
+      @user.can?(:edit, @thing, :email).should be_false
+    end
+    it "should allow @admin to view name and edit phone/email" do
+      @admin.can?(:view, @thing, :name).should be_true
+      @admin.can?(:view, @thing, :phone).should be_true
+      @admin.can?(:view, @thing, :email).should be_true
+      @admin.can?(:edit, @thing, :name).should be_false
+      @admin.can?(:edit, @thing, :phone).should be_true
+      @admin.can?(:edit, @thing, :email).should be_true
+    end
+  end
+
 end

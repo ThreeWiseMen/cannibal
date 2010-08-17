@@ -74,6 +74,28 @@ When /^I declare that only a "([^"]*)" with the role "([^"]*)" can "([^"]*)" an 
   )
 end
 
+When /^I declare that only a "([^"]*)" with the role "([^"]*)" can "([^"]*)" the "([^"]*)" of an "([^"]*)"$/ do |actor, role, verb, attribute, subject|
+  actor_class = constantize(actor)
+  subject_class = constantize(subject)
+  verb_sym = verb.intern
+  attr_sym = attribute.intern
+  subject_class.send(
+    :permission,
+    {
+      :actor => actor_class,
+      :verb => verb_sym,
+      :attribute => attr_sym,
+      :actor_proc => Proc.new{ |actor|
+        if actor.role == role
+          true
+        else
+          false
+        end
+      }
+    }
+  )
+end
+
 When /^I set the "([^"]*)" attribute of the instance variable "([^"]*)" to the instance variable "([^"]*)"$/ do |attribute, ivar_name, ivar_value|
   obj = instance_variable_get(ivar_name.intern)
   value = instance_variable_get(ivar_value.intern)

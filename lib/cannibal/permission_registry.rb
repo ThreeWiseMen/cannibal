@@ -91,12 +91,12 @@ module Cannibal
             ok = ah[attribute][:perm]
           end
 
-          unless actor.is_a? Class
+          unless actor.is_a? Class or ah[attribute][:actor_proc].nil?
 #            puts "Setting from actor_proc"
             ok = ah[attribute][:actor_proc].call actor
           end
 
-          unless subject.is_a? Class
+          unless subject.is_a? Class or ah[attribute][:proc].nil?
 #            puts "Setting from proc"
             ok = ah[attribute][:proc].call actor, subject
           end
