@@ -22,20 +22,22 @@ module Cannibal
       end
 
       actor_proc = options[:actor_proc]
-      verb_hash(actor_class, subject_class, verb)[:actor_proc] = actor_proc unless actor_proc.nil?
-
       gproc = options[:proc]
-      verb_hash(actor_class, subject_class, verb)[:proc] = gproc unless gproc.nil?
 
       perm = options[:perm]
       attributes = options[:attribute]
       if attributes.nil?
         # Set class-wide perms if no attributes specified
         verb_hash(actor_class, subject_class, verb)[:perm] = perm unless perm.nil?
+        verb_hash(actor_class, subject_class, verb)[:actor_proc] = actor_proc unless actor_proc.nil?
+        verb_hash(actor_class, subject_class, verb)[:proc] = gproc unless gproc.nil?
       else
         attributes = [ attributes ] unless attributes.is_a? Array
         attributes.each do |attribute|
-          attribute_hash(actor_class, subject_class, verb)[attribute] = perm
+          attribute_hash(actor_class, subject_class, verb)[attribute] = {}
+          attribute_hash(actor_class, subject_class, verb)[attribute][:perm] = perm unless perm.nil?
+          attribute_hash(actor_class, subject_class, verb)[attribute][:actor_proc] = actor_proc unless actor_proc.nil?
+          attribute_hash(actor_class, subject_class, verb)[attribute][:proc] = gproc unless gproc.nil?
         end
       end
     end
@@ -83,7 +85,21 @@ module Cannibal
 #        puts ah.inspect
         if ah.has_key? attribute
 #          puts "Found key #{attribute}"
-          ok = ah[attribute]
+
+          if ah[attribute].has_key? :perm
+#            puts "Setting from perm"
+            ok = ah[attribute][:perm]
+          end
+
+          unless actor.is_a? Class
+#            puts "Setting from actor_proc"
+            ok = ah[attribute][:actor_proc].call actor
+          end
+
+          unless subject.is_a? Class
+#            puts "Setting from proc"
+            ok = ah[attribute][:proc].call actor, subject
+          end
         end
 #        puts "Found #{ok}"
       end

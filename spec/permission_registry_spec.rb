@@ -104,4 +104,36 @@ describe Cannibal::PermissionRegistry do
     end
   end
 
+  context "stores object and attribute level permissions" do
+    before(:all) do
+      @registry = Cannibal::PermissionRegistry.instance
+      @registry.reset
+      class Actor; attr_accessor :role; end
+      class Subject; attr_accessor :name, :phone, :email; end
+    end
+    it "should register an attribute permission" do
+      @registry.set({
+        :actor => Actor,
+        :verb => :edit,
+        :subject => Subject,
+        :attribute => [ :phone, :email ],
+        :actor_proc => Proc.new{ |actor|
+          if actor.role == 'administrator'
+            true
+          else
+            false
+          end
+        }
+      })
+      @admin = Actor.new; @admin.role = 'administrator'
+      @user = Actor.new; @user.role = 'user'
+      @registry.allowed?(@admin, Subject, :edit, :name).should_not be_true
+      @registry.allowed?(@admin, Subject, :edit, :phone).should be_true
+      @registry.allowed?(@admin, Subject, :edit, :email).should be_true
+      @registry.allowed?(@user, Subject, :edit, :name).should_not be_true
+      @registry.allowed?(@user, Subject, :edit, :phone).should_not be_true
+      @registry.allowed?(@user, Subject, :edit, :email).should_not be_true
+    end
+  end
+
 end

@@ -88,3 +88,18 @@ Feature: Managing permissions on a subject
     And I declare that only a "User" with the role "administrator" can "edit" an "Item"
     Then the instance variable "@admin" should be allowed to "edit" the "name" of an "Item"
     And the instance variable "@user" should not be allowed to "edit" the "name" of an "Item"
+
+  Scenario: Allowing an action on a field in an object by an actor with a specific role
+    Given I have a class named "Item"
+    And I add the attribute "name" to the "Item" class
+    And I have a class named "User"
+    And I add the attribute "role" to the "User" class
+    When I extend "Item" with "Cannibal::Subject"
+    And I extend "User" with "Cannibal::Actor"
+    And I create a new instance of "User" and assign it to an instance variable "@admin"
+    And I set the "role" attribute of the instance variable "@admin" to "administrator"
+    And I create a new instance of "User" and assign it to an instance variable "@user"
+    And I set the "role" attribute of the instance variable "@user" to "user"
+    And I declare that only a "User" with the role "administrator" can "edit" the "name" of an "Item"
+    Then the instance variable "@admin" should be allowed to "edit" the "name" of an "Item"
+    And the instance variable "@user" should not be allowed to "edit" the "name" of an "Item"
