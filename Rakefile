@@ -10,9 +10,10 @@ Cucumber::Rake::Task.new(:cucumber)
 spec = Gem::Specification.new do |s|
 	s.platform          = Gem::Platform::RUBY
         s.name              = "cannibal"
-        s.version           = "0.5.0"
+        s.version           = "0.5.1"
         s.author            = "Three Wise Men"
         s.email             = "info @nospam@ threewisemen.ca"
+        s.homepage          = "http://github.com/ThreeWiseMen/cannibal"
         s.summary           = "Permission framework for Ruby objects"
         s.description       = "Use this library in a Ruby application to provide permission declaration and querying capabilities between Ruby objects."
         s.files             = FileList[ 'lib/*.rb', 'lib/cannibal/*.rb' ].to_a

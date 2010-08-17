@@ -136,7 +136,7 @@ describe Cannibal::Subject do
     end
   end
 
-  context "when I allow an actor object on attribute level permission" do
+  context "when I allow an actor object some attribute level permissions" do
     before(:all) do
       Cannibal::PermissionRegistry.instance.reset
       class User
@@ -150,7 +150,6 @@ describe Cannibal::Subject do
         permission({
           :actor => User,
           :verb => :edit,
-          :subject => Thing,
           :attribute => [ :phone, :email ],
           :actor_proc => Proc.new{ |actor|
             if actor.role == 'administrator'
@@ -183,4 +182,37 @@ describe Cannibal::Subject do
     end
   end
 
+  context "when I allow multiple verbs in one statement" do
+    before(:all) do
+      Cannibal::PermissionRegistry.instance.reset
+      class User
+        include Cannibal::Actor
+        attr_accessor :role
+      end
+      class Thing
+        include Cannibal::Subject
+        attr_accessor :name, :phone, :email
+        allow User, :view
+        permission({
+          :actor => User,
+          :verb => [ :edit, :delete ],
+          :actor_proc => Proc.new{ |actor|
+            if actor.role == 'administrator'
+              true
+            else
+              false
+            end
+          }
+        })
+      end
+      @admin = User.new; @admin.role = 'administrator'
+      @user = User.new; @user.role = 'user'
+      @thing = Thing.new
+    end
+    it "should allow both verbs to operate on subject" do
+      @admin.can?(:edit, @thing).should be_true
+      @admin.can?(:delete, @thing).should be_true
+      @admin.can?(:mangle, @thing).should be_false
+    end
+  end
 end

@@ -6,7 +6,6 @@ module Cannibal
 
     def set(options)
       actor = options[:actor]
-      verb = options[:verb]
       subject = options[:subject]
 
       if actor.is_a? Class
@@ -21,24 +20,31 @@ module Cannibal
         subject_class = subject.class
       end
 
+      perm = options[:perm]
       actor_proc = options[:actor_proc]
       gproc = options[:proc]
 
-      perm = options[:perm]
-      attributes = options[:attribute]
-      if attributes.nil?
-        # Set class-wide perms if no attributes specified
-        verb_hash(actor_class, subject_class, verb)[:perm] = perm unless perm.nil?
-        verb_hash(actor_class, subject_class, verb)[:actor_proc] = actor_proc unless actor_proc.nil?
-        verb_hash(actor_class, subject_class, verb)[:proc] = gproc unless gproc.nil?
-      else
-        attributes = [ attributes ] unless attributes.is_a? Array
-        attributes.each do |attribute|
-          attribute_hash(actor_class, subject_class, verb)[attribute] = {}
-          attribute_hash(actor_class, subject_class, verb)[attribute][:perm] = perm unless perm.nil?
-          attribute_hash(actor_class, subject_class, verb)[attribute][:actor_proc] = actor_proc unless actor_proc.nil?
-          attribute_hash(actor_class, subject_class, verb)[attribute][:proc] = gproc unless gproc.nil?
+      verbs = options[:verb]
+      verbs = [ verbs ] unless verbs.is_a? Array
+
+      verbs.each do |verb|
+
+        attributes = options[:attribute]
+        if attributes.nil?
+          # Set class-wide perms if no attributes specified
+          verb_hash(actor_class, subject_class, verb)[:perm] = perm unless perm.nil?
+          verb_hash(actor_class, subject_class, verb)[:actor_proc] = actor_proc unless actor_proc.nil?
+          verb_hash(actor_class, subject_class, verb)[:proc] = gproc unless gproc.nil?
+        else
+          attributes = [ attributes ] unless attributes.is_a? Array
+          attributes.each do |attribute|
+            attribute_hash(actor_class, subject_class, verb)[attribute] = {}
+            attribute_hash(actor_class, subject_class, verb)[attribute][:perm] = perm unless perm.nil?
+            attribute_hash(actor_class, subject_class, verb)[attribute][:actor_proc] = actor_proc unless actor_proc.nil?
+            attribute_hash(actor_class, subject_class, verb)[attribute][:proc] = gproc unless gproc.nil?
+          end
         end
+
       end
     end
 
