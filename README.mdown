@@ -63,11 +63,7 @@ Actor object-level permissions:
         :actor => User,
         :verb => :edit,
         :actor_proc => Proc.new { |user|
-          if user.role == 'administrator'
-            true
-          else
-            false
-          end
+          user.role == 'administrator'
         }
       })
     end
