@@ -89,11 +89,7 @@ Actor and subject object-to-object level permissions:
         :actor => User,
         :verb => :edit,
         :proc => Proc.new { |user, thing|
-          if user.role == 'administrator' or user == thing.owner
-            true
-          else
-            false
-          end
+          user.role == 'administrator' or user == thing.owner
         }
       })
     end
