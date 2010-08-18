@@ -152,11 +152,7 @@ describe Cannibal::Subject do
           :verb => :edit,
           :attribute => [ :phone, :email ],
           :actor_proc => Proc.new{ |actor|
-            if actor.role == 'administrator'
-              true
-            else
-              false
-            end
+            actor.role == 'administrator'
           }
         })
       end
@@ -213,6 +209,43 @@ describe Cannibal::Subject do
       @admin.can?(:edit, @thing).should be_true
       @admin.can?(:delete, @thing).should be_true
       @admin.can?(:mangle, @thing).should be_false
+    end
+  end
+
+  context "when single class is both actor and subject" do
+    before(:all) do
+      Cannibal::PermissionRegistry.instance.reset
+      class Employee
+        include Cannibal::Actor
+        include Cannibal::Subject
+
+        attr_accessor :role
+
+        permission({
+          :actor => Employee,
+          :verb => [ :edit, :delete, :create ],
+          :actor_proc => Proc.new{ |user|
+            if user.role == 'administrator'
+              true
+            else
+              false
+            end
+          }
+        })
+      end
+
+      @admin = Employee.new; @admin.role = 'administrator'
+      @user = Employee.new; @user.role = 'user'
+    end
+    it "should allow admin to edit user" do
+      @admin.can?(:edit, @user).should be_true
+      @admin.can?(:delete, @user).should be_true
+      @admin.can?(:create, @user).should be_true
+    end
+    it "should not allow user to edit user" do
+      @user.can?(:edit, @admin).should be_false
+      @user.can?(:delete, @admin).should be_false
+      @user.can?(:create, @admin).should be_false
     end
   end
 end

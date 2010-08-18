@@ -136,4 +136,31 @@ describe Cannibal::PermissionRegistry do
     end
   end
 
+  context "stores permissions for combined actor/subject" do
+    before(:all) do
+      @registry = Cannibal::PermissionRegistry.instance
+      @registry.reset
+      class Actor; attr_accessor :role; end
+    end
+    it "should register and query permissions correctly" do
+      @registry.set({
+        :actor => Actor,
+        :verb => :edit,
+        :subject => Actor,
+        :actor_proc => Proc.new{ |actor|
+          if actor.role == 'administrator'
+            true
+          else
+            false
+          end
+        }
+      })
+      @admin = Actor.new; @admin.role = 'administrator'
+      @user = Actor.new; @user.role = 'user'
+
+      @registry.allowed?(@admin, @user, :edit).should be_true
+      @registry.allowed?(@user, @admin, :edit).should be_false
+    end
+  end
+
 end
