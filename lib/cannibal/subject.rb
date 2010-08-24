@@ -2,9 +2,13 @@ module Cannibal
 
   module Subject
     module ClassMethods
-      def allow(actor, verb)
+      def allow(actor, verb, &block)
         method_name = "can_#{actor.to_s.downcase}_#{verb}?"
-        method_body = Proc.new { instance_eval { true } }
+        if block_given?
+          method_body = Proc.new { |obj| instance_exec { block.call(obj) } }
+        else
+          method_body = Proc.new { true }
+        end
         define_method(method_name, method_body)
       end
     end
