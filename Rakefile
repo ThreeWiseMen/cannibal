@@ -7,7 +7,7 @@ require "cucumber/rake/task"
 RSpec::Core::RakeTask.new(:spec)
 Cucumber::Rake::Task.new(:cucumber)
 
-spec = Gem::Specification.new do |s|
+gem_spec = Gem::Specification.new do |s|
   s.platform          = Gem::Platform::RUBY
   s.name              = "cannibal"
   s.version           = "0.5.2"
@@ -23,10 +23,8 @@ spec = Gem::Specification.new do |s|
   s.extra_rdoc_files  = ["README.mdown"]
 end
 
-Rake::GemPackageTask.new(spec) do |pkg|
+Rake::GemPackageTask.new(gem_spec) do |pkg|
   pkg.need_tar = true
 end
 
-task :default => "pkg/#{spec.name}-#{spec.version}.gem" do
-  puts "generated latest version"
-end
+task :default => :spec
