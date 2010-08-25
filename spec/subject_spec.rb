@@ -2,12 +2,8 @@ require 'spec_helper'
 
 describe Cannibal::Subject do
   before(:each) do
-    class Eater
-    end
-
-    class Victim
-      include Cannibal::Subject
-    end
+    class Eater; end
+    class Victim; include Cannibal::Subject; end
   end
   subject { Victim }
 
