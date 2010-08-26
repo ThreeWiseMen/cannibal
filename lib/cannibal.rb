@@ -1,6 +1,7 @@
 require 'cannibal/actor'
-require 'cannibal/subject'
 require 'cannibal/configuration'
+require 'cannibal/helpers'
+require 'cannibal/subject'
 
 module Cannibal
   def self.configuration

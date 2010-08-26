@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Cannibal::Configuration do
   subject { Cannibal::Configuration.new }
 
@@ -18,6 +20,13 @@ describe Cannibal::Configuration do
     it "should set the optimism to be true" do
       subject.optimistic!
       subject.optimistic?.should be_true
+    end
+  end
+
+  describe "#default_optimism!" do
+    it "should set the optimism to be false" do
+      subject.default_optimism!
+      subject.optimistic?.should be_false
     end
   end
 

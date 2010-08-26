@@ -1,9 +1,14 @@
+require 'cannibal/helpers'
+
 module Cannibal
 
   module Subject
+    include Cannibal::Helpers
+
     module ClassMethods
-      def allow(actor, verb, &block)
-        method_name = "can_#{actor.to_s.downcase}_#{verb}?"
+      def allow(actor, action, attribute = nil, &block)
+        actor_class = actor.name
+        method_name = Cannibal::Helpers.can_method_name(actor_class, action, attribute)
         if block_given?
           method_body = Proc.new { |obj| instance_exec { block.call(obj) } }
         else

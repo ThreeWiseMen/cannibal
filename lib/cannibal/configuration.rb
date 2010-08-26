@@ -3,7 +3,7 @@ module Cannibal
     DEFAULT_OPTIMISM = false
 
     def initialize
-      @optimism = DEFAULT_OPTIMISM
+      default_optimism!
     end
 
     def optimistic?
@@ -16,6 +16,10 @@ module Cannibal
 
     def optimistic!
       @optimism = true
+    end
+
+    def default_optimism!
+      @optimism = DEFAULT_OPTIMISM
     end
   end
 end
